@@ -1,0 +1,42 @@
+# MIT 6.00.1x Problem Set 2: Problem 3
+# Calculate fixed payment amount to repay debt in one year 
+# using bisection search
+
+#Test variables - provided by grader
+balance = 999999
+annualInterestRate = 0.18
+
+#Initial variables
+monthlyRate = annualInterestRate / 12
+lowerPayment = balance / 12
+upperPayment = (balance * (1 + monthlyRate)**12) / 12
+payment = (lowerPayment + upperPayment)/2
+savedBalance = balance
+epsilon = 0.01
+
+def endBalance(payment, balance, monthlyRate):
+    '''
+    All parameters should be ints. Returns balance after 12 months
+    of making payments, accounting for monthly interest rate.
+    '''
+    month = 1
+    while month < 13:
+        unpaidBalance = balance - payment
+        balance = unpaidBalance + (monthlyRate * unpaidBalance)
+        month += 1
+    return balance
+
+# Use bisection search to determine minimum payment amount to reach
+# zero balance after 12 months.
+
+while True:    
+    result = endBalance(payment, balance, monthlyRate)
+    if abs(result - epsilon) < 0.1:
+        print "Lowest Payment:", str(round(payment, 2))
+        break
+    elif result < 0:
+        upperPayment = payment
+        payment = (lowerPayment + upperPayment)/2
+    elif result > 0:
+        lowerPayment = payment
+        payment = (lowerPayment + upperPayment)/2
