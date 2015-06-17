@@ -1,0 +1,31 @@
+# MIT 6.00.1x Problem Set 2: Problem 2
+# Calculate fixed payment amount to repay debt in one year
+
+#Test variables - provided by grader
+balance = 3926
+annualInterestRate = 0.2
+
+#Initial variables
+payment = 10
+monthlyRate = annualInterestRate / 12
+savedBalance = balance
+
+def endBalance(payment, balance, monthlyRate):
+    '''
+    All parameters should be ints. Returns balance after 12 months
+    of making payment, accounting for monthly interest rate.
+    '''
+    month = 1
+    while month < 13:
+        unpaidBalance = balance - payment
+        balance = unpaidBalance + (monthlyRate * unpaidBalance)
+        month += 1
+    return balance
+
+#Exhaustively search payment amounts, incrementing by $10 to determine
+#minimum payment amount to reach zero balance.    
+while endBalance(payment, balance, monthlyRate) >= 0:
+    payment += 10
+    endBalance(payment, balance, monthlyRate)
+    
+print "Lowest Payment:", str(payment)
